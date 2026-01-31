@@ -2,18 +2,18 @@ substitutions:
   uuid:
 	### uuid source https://github.com/sandeepmistry/node-tethercell/blob/master/tethercell.txt
     service: 5EC0FFF0-3CF2-A682-E211-2AF96EFDF667
-    family: 5ec0fff1-3cf2-a682-e211-2af96efdf667
-    fet_state: 5ec0fff2-3cf2-a682-e211-2af96efdf667
-    battery_voltage: 5ec0fff3-3cf2-a682-e211-2af96efdf667
-	  timers: 5ec0fff4-3cf2-a682-e211-2af96efdf667
-	  timer_access_index: 5ec0fff5-3cf2-a682-e211-2af96efdf667
-	  battery_voltage_most_recent_index: 5ec0fff6-3cf2-a682-e211-2af96efdf667
-	  battery_voltage_history: 5ec0fff7-3cf2-a682-e211-2af96efdf667
-	  password: 5ec0fff8-3cf2-a682-e211-2af96efdf667
-	  device_name: 5ec0fff9-3cf2-a682-e211-2af96efdf667
-	  utc_time: 5ec0fffa-3cf2-a682-e211-2af96efdf667
-	  advertising_period: 5ec0fffb-3cf2-a682-e211-2af96efdf667
-	  authorization: 5ec0fffc-3cf2-a682-e211-2af96efdf667
+    family: 5EC0FFF1-3CF2-A682-E211-2AF96EFDF667
+    fet_state: 5EC0FFF2-3CF2-A682-E211-2AF96EFDF667
+    battery_voltage: 5EC0FFF3-3CF2-A682-E211-2AF96EFDF667
+	timers: 5EC0FFF4-3CF2-A682-E211-2AF96EFDF667
+	timer_access_index: 5EC0FFF5-3CF2-A682-E211-2AF96EFDF667
+	battery_voltage_most_recent_index: 5EC0FFF6-3CF2-A682-E211-2AF96EFDF667
+	battery_voltage_history: 5EC0FFF7-3CF2-A682-E211-2AF96EFDF667
+	password: 5EC0FFF8-3CF2-A682-E211-2AF96EFDF667
+	device_name: 5EC0FFF9-3CF2-A682-E211-2AF96EFDF667
+	utc_time: 5EC0FFFA-3CF2-A682-E211-2AF96EFDF667
+	advertising_period: 5EC0FFFB-3CF2-A682-E211-2AF96EFDF667
+	authorization: 5EC0FFFC-3CF2-A682-E211-2AF96EFDF667
 
 ble_client:
   - mac_address: ${tethercell_mac}
@@ -26,7 +26,7 @@ ble_client:
         - lambda: |-
             ESP_LOGI("ble_client_lambda", "Sending auth to Tethercell ${tethercell_number}");
         - ble_client.ble_write:
-          ### send authentication pin
+          ### send the authentication PIN to activate the service announcement
             id: tethercell_device_${tethercell_number}
             service_uuid: ${uuid.service}
             characteristic_uuid: ${uuid.authorization}
