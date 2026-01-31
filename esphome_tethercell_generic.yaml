@@ -82,7 +82,7 @@ sensor:
     ble_client_id: tethercell_device_${tethercell_number}
     name: "Battery Voltage Most Recent Index"
     service_uuid: ${uuid.service}
-    characteristic_uuid: ${uuid.Battery Voltage Most Recent Index}
+    characteristic_uuid: ${uuid.battery_voltage_most_recent_index}
     icon: 'variable'
   - platform: ble_client
     type: characteristic
