@@ -4,15 +4,15 @@ substitutions:
     family: 5EC0FFF1-3CF2-A682-E211-2AF96EFDF667
     fet_state: 5EC0FFF2-3CF2-A682-E211-2AF96EFDF667
     battery_voltage: 5EC0FFF3-3CF2-A682-E211-2AF96EFDF667
-	timers: 5EC0FFF4-3CF2-A682-E211-2AF96EFDF667
-	timer_access_index: 5EC0FFF5-3CF2-A682-E211-2AF96EFDF667
-	battery_voltage_most_recent_index: 5EC0FFF6-3CF2-A682-E211-2AF96EFDF667
-	battery_voltage_history: 5EC0FFF7-3CF2-A682-E211-2AF96EFDF667
-	password: 5EC0FFF8-3CF2-A682-E211-2AF96EFDF667
-	device_name: 5EC0FFF9-3CF2-A682-E211-2AF96EFDF667
-	utc_time: 5EC0FFFA-3CF2-A682-E211-2AF96EFDF667
-	advertising_period: 5EC0FFFB-3CF2-A682-E211-2AF96EFDF667
-	authorization: 5EC0FFFC-3CF2-A682-E211-2AF96EFDF667
+    timers: 5EC0FFF4-3CF2-A682-E211-2AF96EFDF667
+    timer_access_index: 5EC0FFF5-3CF2-A682-E211-2AF96EFDF667
+    battery_voltage_most_recent_index: 5EC0FFF6-3CF2-A682-E211-2AF96EFDF667
+    battery_voltage_history: 5EC0FFF7-3CF2-A682-E211-2AF96EFDF667
+    password: 5EC0FFF8-3CF2-A682-E211-2AF96EFDF667
+    device_name: 5EC0FFF9-3CF2-A682-E211-2AF96EFDF667
+    utc_time: 5EC0FFFA-3CF2-A682-E211-2AF96EFDF667
+    advertising_period: 5EC0FFFB-3CF2-A682-E211-2AF96EFDF667
+    authorization: 5EC0FFFC-3CF2-A682-E211-2AF96EFDF667
 
 ble_client:
   - mac_address: ${tethercell_mac}
@@ -86,4 +86,3 @@ switch:
           value: [0x00]
       - lambda: |-
             ESP_LOGI("ble_client_lambda", "Send FET OFF to Tethercell ${tethercell_number}");
-
