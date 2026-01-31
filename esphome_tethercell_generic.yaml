@@ -1,0 +1,83 @@
+substitutions:
+  uuid:
+    service: 5EC0FFF0-3CF2-A682-E211-2AF96EFDF667
+    auth: 5EC0FFFC-3CF2-A682-E211-2AF96EFDF667
+    fet: 5EC0FFF2-3CF2-A682-E211-2AF96EFDF667
+
+ble_client:
+  - mac_address: ${mac}
+    id: tethercell_device_${number}
+    auto_connect: true
+    on_connect:
+      then:
+        - lambda: |-
+            ESP_LOGI("ble_client_lambda", "Client connected to Tethercell ${number}");
+        - lambda: |-
+            ESP_LOGI("ble_client_lambda", "Sending auth to Tethercell ${number}");
+        - ble_client.ble_write:
+          #send authentication pin
+            id: tethercell_device_${number}
+            service_uuid: ${uuid.service}
+            characteristic_uuid: ${uuid.auth}
+            value: !lambda |-
+              uint32_t val = strtoul("${pin}", nullptr, 10);
+              return std::vector<uint8_t>{
+                (uint8_t)((val >> 24) & 0xFF),
+                (uint8_t)((val >> 16) & 0xFF),
+                (uint8_t)((val >> 8) & 0xFF),
+                (uint8_t)(val & 0xFF)
+              };
+    on_disconnect:
+      then:
+        - lambda: |-
+            ESP_LOGI("ble_client_lambda", "Client disconnected from Tethercell ${number}");
+
+switch:
+  - platform: template
+    name: "Tethercell ${number} FET"
+    optimistic: true
+    icon: mdi:battery-bluetooth
+    turn_on_action:
+      - ble_client.ble_write:
+          #send authentication pin
+          id: tethercell_device_${number}
+          service_uuid: ${uuid.service}
+          characteristic_uuid: ${uuid.auth}
+          value: !lambda |-
+            uint32_t val = strtoul("${pin}", nullptr, 10);
+            return std::vector<uint8_t>{
+              (uint8_t)((val >> 24) & 0xFF),
+              (uint8_t)((val >> 16) & 0xFF),
+              (uint8_t)((val >> 8) & 0xFF),
+              (uint8_t)(val & 0xFF)
+            };
+      - ble_client.ble_write:
+          #send fet state on
+          id: tethercell_device_${number}
+          service_uuid: ${uuid.service}
+          characteristic_uuid: ${uuid.fet}
+          value: [0x01]
+      - lambda: |-
+            ESP_LOGI("ble_client_lambda", "Send FET ON to Tethercell ${number}");
+    turn_off_action:
+      - ble_client.ble_write:
+          #send authentication pin
+          id: tethercell_device_${number}
+          service_uuid: ${uuid.service}
+          characteristic_uuid: ${uuid.auth}
+          value: !lambda |-
+            uint32_t val = strtoul("${pin}", nullptr, 10);
+            return std::vector<uint8_t>{
+              (uint8_t)((val >> 24) & 0xFF),
+              (uint8_t)((val >> 16) & 0xFF),
+              (uint8_t)((val >> 8) & 0xFF),
+              (uint8_t)(val & 0xFF)
+            };
+      - ble_client.ble_write:
+          #send fet state off
+          id: tethercell_device_${number}
+          service_uuid: ${uuid.service}
+          characteristic_uuid: ${uuid.fet}
+          value: [0x00]
+      - lambda: |-
+            ESP_LOGI("ble_client_lambda", "Send FET OFF to Tethercell ${number}");
