@@ -1,17 +1,8 @@
 substitutions:
   uuid: # based on uuid source https://github.com/sandeepmistry/node-tethercell/blob/master/tethercell.txt
     service: 5EC0FFF0-3CF2-A682-E211-2AF96EFDF667
-    family: 5EC0FFF1-3CF2-A682-E211-2AF96EFDF667
     fet_state: 5EC0FFF2-3CF2-A682-E211-2AF96EFDF667
     battery_voltage: 5EC0FFF3-3CF2-A682-E211-2AF96EFDF667
-    timers: 5EC0FFF4-3CF2-A682-E211-2AF96EFDF667
-    timer_access_index: 5EC0FFF5-3CF2-A682-E211-2AF96EFDF667
-    battery_voltage_most_recent_index: 5EC0FFF6-3CF2-A682-E211-2AF96EFDF667
-    battery_voltage_history: 5EC0FFF7-3CF2-A682-E211-2AF96EFDF667
-    password: 5EC0FFF8-3CF2-A682-E211-2AF96EFDF667
-    device_name: 5EC0FFF9-3CF2-A682-E211-2AF96EFDF667
-    utc_time: 5EC0FFFA-3CF2-A682-E211-2AF96EFDF667
-    advertising_period: 5EC0FFFB-3CF2-A682-E211-2AF96EFDF667
     authorization: 5EC0FFFC-3CF2-A682-E211-2AF96EFDF667
 
 ble_client:
@@ -36,6 +27,12 @@ ble_client:
                 (uint8_t)((val >> 8) & 0xFF),
                 (uint8_t)(val & 0xFF)
               };
+        - lambda: |- # get current switch state from sensor value
+            if (sensor_tethercell_${tethercell_number}_fet_state).state > 0.5) {
+              id(switch_tethercell_${tethercell_number}_fet).turn_on();
+            } else {
+              id(switch_tethercell_${tethercell_number}_fet).turn_off();
+            } 
     on_disconnect:
       then:
         - lambda: |-
@@ -45,14 +42,8 @@ sensor:
   - platform: ble_client
     type: characteristic
     ble_client_id: tethercell_device_${tethercell_number}
-    name: "Tethercell ${tethercell_number} Family"
-    service_uuid: ${uuid.service}
-    characteristic_uuid: ${uuid.family}
-    icon: mdi:variable
-  - platform: ble_client
-    type: characteristic
-    ble_client_id: tethercell_device_${tethercell_number}
     name: "Tethercell ${tethercell_number} FET State"
+    id: sensor_tethercell_${tethercell_number}_fet_state
     service_uuid: ${uuid.service}
     characteristic_uuid: ${uuid.fet_state}
     icon: mdi:variable
@@ -60,69 +51,15 @@ sensor:
     type: characteristic
     ble_client_id: tethercell_device_${tethercell_number}
     name: "Tethercell ${tethercell_number} Battery voltage"
+    id: sensor_tethercell_${tethercell_number}_battery_voltage
     service_uuid: ${uuid.service}
     characteristic_uuid: ${uuid.battery_voltage}
-    icon: mdi:variable
-  - platform: ble_client
-    type: characteristic
-    ble_client_id: tethercell_device_${tethercell_number}
-    name: "Tethercell ${tethercell_number} Timers"
-    service_uuid: ${uuid.service}
-    characteristic_uuid: ${uuid.timers}
-    icon: mdi:variable
-  - platform: ble_client
-    type: characteristic
-    ble_client_id: tethercell_device_${tethercell_number}
-    name: "Tethercell ${tethercell_number} Timer access index"
-    service_uuid: ${uuid.service}
-    characteristic_uuid: ${uuid.timer_access_index}
-    icon: mdi:variable
-  - platform: ble_client
-    type: characteristic
-    ble_client_id: tethercell_device_${tethercell_number}
-    name: "Tethercell ${tethercell_number} Battery Voltage Most Recent Index"
-    service_uuid: ${uuid.service}
-    characteristic_uuid: ${uuid.battery_voltage_most_recent_index}
-    icon: mdi:variable
-  - platform: ble_client
-    type: characteristic
-    ble_client_id: tethercell_device_${tethercell_number}
-    name: "Tethercell ${tethercell_number} Battery Voltage History"
-    service_uuid: ${uuid.service}
-    characteristic_uuid: ${uuid.battery_voltage_history}
-    icon: mdi:variable
-  - platform: ble_client
-    type: characteristic
-    ble_client_id: tethercell_device_${tethercell_number}
-    name: "Tethercell ${tethercell_number} Password"
-    service_uuid: ${uuid.service}
-    characteristic_uuid: ${uuid.password}
-    icon: mdi:variable
-  - platform: ble_client
-    type: characteristic
-    ble_client_id: tethercell_device_${tethercell_number}
-    name: "Tethercell ${tethercell_number} Device Name"
-    service_uuid: ${uuid.service}
-    characteristic_uuid: ${uuid.device_name}
-    icon: mdi:variable
-  - platform: ble_client
-    type: characteristic
-    ble_client_id: tethercell_device_${tethercell_number}
-    name: "Tethercell ${tethercell_number} UTC Time"
-    service_uuid: ${uuid.service}
-    characteristic_uuid: ${uuid.utc_time}
-    icon: mdi:variable
-  - platform: ble_client
-    type: characteristic
-    ble_client_id: tethercell_device_${tethercell_number}
-    name: "Tethercell ${tethercell_number} Advertising Period in s"
-    service_uuid: ${uuid.service}
-    characteristic_uuid: ${uuid.advertising_period}
     icon: mdi:variable
 
 switch:
   - platform: template
     name: "Tethercell ${tethercell_number} FET"
+    id: switch_tethercell_${tethercell_number}_fet
     optimistic: true
     icon: mdi:battery-bluetooth
     turn_on_action:
