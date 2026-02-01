@@ -27,24 +27,12 @@ ble_client:
                 (uint8_t)((val >> 8) & 0xFF),
                 (uint8_t)(val & 0xFF)
               };
-        - ble_client.read_characteristic:
-            id: tethercell_device_${tethercell_number}
-            service_uuid: ${uuid.service}
-            characteristic_uuid: ${uuid.fet_state}
     on_disconnect:
       then:
         - lambda: |-
             ESP_LOGI("ble_client_lambda", "Client disconnected from Tethercell ${tethercell_number}");
             
 sensor:
-  - platform: ble_client
-    type: characteristic
-    ble_client_id: tethercell_device_${tethercell_number}
-    name: "Tethercell ${tethercell_number} FET State"
-    id: sensor_tethercell_${tethercell_number}_fet_state
-    service_uuid: ${uuid.service}
-    characteristic_uuid: ${uuid.fet_state}
-    icon: mdi:variable
   - platform: ble_client
     type: characteristic
     ble_client_id: tethercell_device_${tethercell_number}
@@ -100,4 +88,3 @@ switch:
           value: [0x00]
       - lambda: |-
             ESP_LOGI("ble_client_lambda", "Send FET OFF to Tethercell ${tethercell_number}");
-
