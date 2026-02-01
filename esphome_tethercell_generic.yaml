@@ -40,7 +40,16 @@ sensor:
     id: sensor_tethercell_${tethercell_number}_battery_voltage
     service_uuid: ${uuid.service}
     characteristic_uuid: ${uuid.battery_voltage}
-    icon: mdi:variable
+    update_interval: 300s
+    icon: mdi:battery-medium
+    unit_of_measurement: "V"
+    accuracy_decimals: 2
+    lambda: |-
+      if (x.size() < 2) {
+        return NAN;
+      }
+      uint16_t value = (uint16_t(x[1]) << 8) | uint16_t(x[0]);
+      return 1.36f * (float(value) / 1662.0f);
 
 switch:
   - platform: template
@@ -88,3 +97,4 @@ switch:
           value: [0x00]
       - lambda: |-
             ESP_LOGI("ble_client_lambda", "Send FET OFF to Tethercell ${tethercell_number}");
+
