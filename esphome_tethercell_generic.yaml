@@ -27,40 +27,10 @@ ble_client:
                 (uint8_t)((val >> 8) & 0xFF),
                 (uint8_t)(val & 0xFF)
               };
-        - lambda: |- # get current switch state from sensor value
-            auto sensors = {
-              &id(sensor_tethercell_1_fet_state),
-              &id(sensor_tethercell_2_fet_state),
-              &id(sensor_tethercell_3_fet_state),
-              &id(sensor_tethercell_4_fet_state),
-              &id(sensor_tethercell_5_fet_state),
-              &id(sensor_tethercell_6_fet_state),
-              &id(sensor_tethercell_7_fet_state),
-              &id(sensor_tethercell_8_fet_state),
-              &id(sensor_tethercell_9_fet_state),
-              &id(sensor_tethercell_10_fet_state)
-            };
-
-            auto switches = {
-              &id(switch_tethercell_1),
-              &id(switch_tethercell_2),
-              &id(switch_tethercell_3),
-              &id(switch_tethercell_4),
-              &id(switch_tethercell_5),
-              &id(switch_tethercell_6),
-              &id(switch_tethercell_7),
-              &id(switch_tethercell_8),
-              &id(switch_tethercell_9),
-              &id(switch_tethercell_10)
-            };
-
-            for (int i = 0; i < 10; i++) {
-              if (sensors[i]->state) {
-                switches[i]->turn_on();
-              } else {
-                switches[i]->turn_off();
-              }
-            }
+        - ble_client.read_characteristic:
+            id: tethercell_device_${tethercell_number}
+            service_uuid: ${uuid.service}
+            characteristic_uuid: ${uuid.fet_state}
     on_disconnect:
       then:
         - lambda: |-
@@ -130,3 +100,4 @@ switch:
           value: [0x00]
       - lambda: |-
             ESP_LOGI("ble_client_lambda", "Send FET OFF to Tethercell ${tethercell_number}");
+
