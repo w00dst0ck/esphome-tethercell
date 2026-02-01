@@ -16,7 +16,7 @@ packages:
           tethercell_mac: 88:33:14:49:XX:XX
           tethercell_pin: 00000000
     ref: main
-    refresh: 5s
+    refresh: 1d
 
   tethercell2:
     url: https://github.com/w00dst0ck/esphome-tethercell
@@ -27,5 +27,5 @@ packages:
           tethercell_mac: 88:33:14:49:XX:XX
           tethercell_pin: 00000000
     ref: main
-    refresh: 5s
+    refresh: 1d
 ```
