@@ -1,5 +1,5 @@
 substitutions:
-  uuid: # based on uuid source https://github.com/sandeepmistry/node-tethercell/blob/master/tethercell.txt
+  uuid: # based on uuid source forked at https://github.com/w00dst0ck/node-tethercell/blob/master/tethercell.txt
     service: 5EC0FFF0-3CF2-A682-E211-2AF96EFDF667
     family: 5EC0FFF1-3CF2-A682-E211-2AF96EFDF667
     fet_state: 5EC0FFF2-3CF2-A682-E211-2AF96EFDF667
