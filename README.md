@@ -1,6 +1,8 @@
 # esphome-tethercell
 After having a few Tethercell batteries lying unused in a drawer for a few years, it was time to put them back to use.
 
+Integration into Home Assistant is possible via ESPHome.
+
 Example esphome configuration as package to switch a tethercell battery via bluetooth
 
 ```yaml
