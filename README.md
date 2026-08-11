@@ -1,6 +1,6 @@
 # ESPHome Tethercell
 
-[PLACEHOLDER: Tethercell device image]
+<img src="/docs/_media/tethercells.jpg" width="450">
 
 An ESPHome integration for controlling and monitoring **Tethercell batteries over Bluetooth Low Energy (BLE)**.
 
